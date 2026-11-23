@@ -24,7 +24,7 @@
     <div class="rows">
       ${row("tel:+" + C.phone, ico.phone, esc(C.phoneText), "Телефон и WhatsApp лавки", false)}
       ${row(`https://instagram.com/${C.instagram}`, ico.ig, "@" + esc(C.instagram), "Instagram", true)}
-      <div class="row"><i>${ico.walk}</i><div><b>${esc(C.address)}</b><span>Каждый день ${esc(C.hours)}</span></div><span></span></div>
+      <div class="row"><i>${ico.walk}</i><div><b>${esc(C.address)}</b><span>Режим работы ${esc(C.hours)}</span></div><span></span></div>
     </div>
     <div class="cafe-cta">
       <a class="btn btn-wa" href="https://wa.me/${C.phone}" target="_blank" rel="noopener">${ico.wa}Написать в WhatsApp</a>
