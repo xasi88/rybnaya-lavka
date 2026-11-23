@@ -1,0 +1,105 @@
+/* Экран «Каталог»: первый экран, полоса разделов, разделы, строки товаров, окно товара */
+
+.app { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gap) 32px; }
+.menu-layout { display: block; }
+.side-order { display: none; }
+
+/* Первый экран: фото лавки, три шага, условия */
+.intro { position: relative; margin-top: 8px; border-radius: 22px; overflow: hidden; border: 1px solid var(--line); background: var(--wine); }
+.intro-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.38; }
+.intro::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0%, var(--bg) 96%); }
+.intro-in { position: relative; z-index: 1; padding: 22px 18px 18px; }
+.intro-kicker { font: italic 500 16px/1.2 var(--head); color: var(--gold); margin-bottom: 8px; }
+.intro-title { font: 700 26px/1.15 var(--head); color: var(--gold-light); max-width: 18ch; text-wrap: balance; }
+.steps { list-style: none; margin: 20px 0 16px; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.steps li { position: relative; display: grid; justify-items: center; gap: 8px; text-align: center; font-size: 12.5px; font-weight: 600; line-height: 1.25; color: var(--text); }
+.steps li:not(:last-child)::after { content: ""; position: absolute; top: 22px; left: calc(50% + 28px); right: calc(-50% + 28px); border-top: 1px dashed var(--gold-dark); }
+.steps i { width: var(--tap); height: var(--tap); border-radius: 50%; display: grid; place-items: center; background: var(--card); color: var(--gold-light); border: 1px solid var(--gold-dark); animation: pop-in 0.6s var(--spring) both; }
+.steps li:nth-child(2) i { animation-delay: 0.12s; }
+.steps li:nth-child(3) i { animation-delay: 0.24s; }
+.steps i.wa { background: var(--wa); color: var(--on-wa); border-color: var(--wa); }
+.steps svg { width: 22px; height: 22px; }
+.terms { display: grid; gap: 6px; font-size: 13.5px; color: var(--muted); }
+.terms span { display: flex; align-items: center; gap: 8px; }
+.terms svg { flex: none; width: 18px; height: 18px; color: var(--gold); }
+@keyframes pop-in { from { transform: scale(0.6); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* Полоса разделов: прилипает под шапкой */
+.chips { position: sticky; top: calc(var(--appbar-h) + env(safe-area-inset-top, 0px)); z-index: 20; margin: 10px calc(var(--gap) * -1) 0; padding: 8px 0; background: var(--bar); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.chips-track { position: relative; display: flex; gap: 8px; padding: 0 var(--gap); overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; }
+.chips-track::-webkit-scrollbar { display: none; }
+.chip { position: relative; z-index: 2; flex: none; height: var(--tap); padding: 0 16px; border: 1px solid var(--line); border-radius: 22px; background: transparent; color: var(--muted); font-weight: 600; font-size: 14.5px; white-space: nowrap; transition: color 0.25s, border-color 0.25s; }
+.chip.on { color: var(--on-gold); border-color: transparent; }
+.chips-pill { position: absolute; z-index: 1; top: 0; left: 0; height: var(--tap); border-radius: 22px; background: var(--gold); transition: transform 0.45s var(--ease), width 0.45s var(--ease); }
+
+/* Раздел: фото с названием или название с золотой чертой */
+.group { padding-top: 22px; }
+.group-hero { position: relative; aspect-ratio: 21 / 9; max-height: 220px; width: 100%; border-radius: var(--r); overflow: hidden; border: 1px solid var(--line); margin-bottom: 12px; }
+.group-hero img { width: 100%; height: 100%; object-fit: cover; }
+.group-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 30%, var(--veil) 100%); }
+.group-hero .group-head { position: absolute; z-index: 1; left: 14px; right: 14px; bottom: 10px; }
+.group-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+.group-head.plain { margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--gold-dark); }
+.group-head h2 { font: 700 26px/1.15 var(--head); color: var(--gold-light); }
+.group-head p { font: italic 500 15px/1.2 var(--head); color: var(--gold); }
+
+/* Строки товаров: одна колонка на телефоне, две на широком экране */
+.grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+@media (min-width: 700px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } }
+.card {
+  display: flex; align-items: center; gap: 12px; min-height: 68px; padding: 10px 10px 10px 14px;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--r); cursor: pointer;
+  opacity: 0; transform: translateY(12px); transition: opacity 0.5s var(--ease), transform 0.5s var(--ease), border-color 0.25s, background 0.25s;
+}
+.card.in { opacity: 1; transform: none; }
+.card.picked { border-color: var(--gold-dark); background: var(--card-2); }
+.c-pic { flex: none; width: 48px; height: 48px; border-radius: 10px; overflow: hidden; margin-left: -4px; }
+.c-pic img { width: 100%; height: 100%; object-fit: cover; }
+.c-body { flex: 1; min-width: 0; display: grid; gap: 3px; }
+.c-name { font: 600 15.5px/1.25 var(--body); color: var(--text); }
+.c-price { font: 700 16px/1.2 var(--head); color: var(--gold); font-variant-numeric: tabular-nums; }
+.c-buy { flex: none; }
+
+/* Кнопка «Добавить» и счётчик «− 1,5 кг +» */
+.ctl { position: relative; display: flex; align-items: center; }
+.ctl button { border: 0; background: none; color: inherit; display: inline-flex; align-items: center; justify-content: center; }
+.ctl svg { width: 20px; height: 20px; stroke-width: 2.4; }
+.ctl.empty button { height: var(--tap); gap: 6px; padding: 0 14px 0 10px; border-radius: var(--r-btn); border: 1px solid var(--gold-dark); color: var(--gold-light); font-weight: 600; font-size: 14.5px; transition: transform 0.35s var(--spring), background 0.2s; }
+.ctl.empty button:active { transform: scale(0.94); background: var(--gold-soft); }
+.ctl.has { height: var(--tap); border-radius: var(--r-btn); background: var(--gold); color: var(--on-gold); animation: pop-in 0.4s var(--spring); }
+.ctl.has button { width: var(--tap); height: var(--tap); border-radius: var(--r-btn); transition: transform 0.35s var(--spring); }
+.ctl.has button:active { transform: scale(0.85); }
+.ctl.has output { min-width: 58px; padding: 0 2px; text-align: center; font: 700 15px/1 var(--body); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ctl.big { width: 100%; }
+.ctl.big.empty button { width: 100%; height: 52px; font-size: 16px; background: var(--gold); color: var(--on-gold); border-color: var(--gold); font-weight: 700; }
+.ctl.big.has { height: 52px; width: 100%; justify-content: space-between; }
+.ctl.big.has button { width: 56px; height: 52px; }
+.ctl.big.has output { font-size: 17px; }
+@media (max-width: 359px) {
+  .ctl.empty:not(.big) button { width: var(--tap); padding: 0; }
+  .ctl.empty:not(.big) button span { display: none; }
+  .ctl.has output { min-width: 50px; font-size: 14px; }
+}
+
+.price-note { margin-top: 26px; padding: 14px 16px; border: 1px dashed var(--line); border-radius: var(--r); font-size: 13.5px; color: var(--muted); }
+
+/* Окно товара */
+.d-art { aspect-ratio: 4 / 3; max-height: 46svh; width: 100%; background: var(--wine); overflow: hidden; }
+.d-art img { width: 100%; height: 100%; object-fit: cover; }
+.d-body { padding: 16px 18px 18px; display: grid; gap: 6px; }
+.d-meta { font: italic 500 15px/1.2 var(--head); color: var(--gold); }
+.d-name { font: 700 26px/1.15 var(--head); color: var(--gold-light); }
+.d-sum { font-size: 14px; color: var(--muted); }
+.d-buy { display: grid; gap: 12px; margin-top: 8px; }
+.d-price { font: 700 24px/1 var(--head); color: var(--text); font-variant-numeric: tabular-nums; }
+
+/* Большой экран: каталог слева, заказ справа */
+@media (min-width: 1024px) {
+  .menu-layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 28px; align-items: start; }
+  .side-order { display: block; position: sticky; top: calc(var(--appbar-h) + 16px); max-height: calc(100vh - var(--appbar-h) - 32px); overflow: auto; margin-top: 8px; padding: 18px; border: 1px solid var(--line); border-radius: 22px; background: var(--card); }
+  .cartbar { display: none; }
+  body.has-cart { padding-bottom: 0; }
+  .intro-in { padding: 34px 30px 26px; }
+  .intro-title { font-size: 36px; }
+  .steps { max-width: 480px; }
+}

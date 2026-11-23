@@ -1,0 +1,174 @@
+/* Основа: переменные брендбука, шапка, кнопки, кнопка корзины, окно, подсказка.
+   Цвета, шрифты и размеры меняются только здесь и вместе с брендбуком (docs/Брендбук Рыбная лавка.md). */
+
+:root {
+  /* Цвета: графит и золото с логотипа */
+  --wine: #1c1c1c;
+  --wine-2: #2b2b2b;
+  --gold: #c2a06a;
+  --gold-light: #eacfa0;
+  --gold-dark: #a57d42;
+  --bg: #0f0f0f;
+  --card: #1a1a1a;
+  --card-2: #242424;
+  --line: #363128;
+  --text: #f6ece0;
+  --muted: #b3a994;
+  --on-gold: #1a1407;
+  --wa: #25d366;
+  --on-wa: #06260f;
+  --veil: rgba(5, 5, 5, 0.72);
+  --bar: rgba(15, 15, 15, 0.88);
+  --gold-soft: rgba(194, 160, 106, 0.14);
+  --shadow: 0 18px 36px -18px rgba(0, 0, 0, 0.85);
+
+  /* Шрифты */
+  --head: "Playfair Display", Georgia, serif;
+  --body: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Размеры */
+  --r: 16px;
+  --r-btn: 12px;
+  --gap: 16px;
+  --tap: 44px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --spring: cubic-bezier(0.34, 1.45, 0.64, 1);
+  --appbar-h: 64px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --wrap: 1240px;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--appbar-h) + 72px); background: var(--bg); }
+body {
+  margin: 0; min-height: 100svh; background: var(--bg); color: var(--text);
+  font: 400 16px/1.45 var(--body);
+  overflow-x: hidden; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased;
+}
+body.has-cart { padding-bottom: calc(88px + var(--safe-b)); }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: inherit; }
+svg { display: block; }
+img { display: block; max-width: 100%; }
+svg.i { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+h1, h2, h3, p { margin: 0; overflow-wrap: break-word; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; border-radius: 10px; }
+.noscript { padding: 16px; }
+
+/* Шапка: знак лавки, имя, поиск и «о лавке» */
+.appbar {
+  position: sticky; top: 0; z-index: 30; height: var(--appbar-h);
+  padding-top: env(safe-area-inset-top, 0px); box-sizing: content-box;
+  background: var(--bar); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid transparent; transition: border-color 0.3s;
+}
+.appbar.scrolled { border-bottom-color: var(--line); }
+.appbar-in { height: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gap); display: flex; align-items: center; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; min-width: 0; margin-right: auto; }
+.brand-mark { flex: none; width: 46px; height: 46px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 1px var(--gold-dark); }
+.brand-mark img { width: 100%; height: 100%; object-fit: cover; }
+.brand-text { display: grid; line-height: 1.1; min-width: 0; }
+.brand-text b { font: 700 20px/1.1 var(--head); color: var(--gold-light); white-space: nowrap; }
+.brand-sub { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+.tools { display: flex; gap: 8px; }
+.tool {
+  width: var(--tap); height: var(--tap); border-radius: var(--r-btn); display: grid; place-items: center;
+  background: var(--card-2); color: var(--gold-light); text-decoration: none; border: 1px solid var(--line);
+  transition: transform 0.4s var(--spring), background 0.2s;
+}
+.tool svg { width: 22px; height: 22px; }
+.tool:active { transform: scale(0.9); }
+.tool.on { background: var(--gold); color: var(--on-gold); border-color: var(--gold); }
+
+/* Кнопки */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding: 0 22px; border: 0; border-radius: var(--r-btn);
+  font: 700 16px/1.2 var(--body); text-decoration: none; text-align: center;
+  transition: transform 0.4s var(--spring), background 0.2s;
+}
+.btn svg { width: 22px; height: 22px; flex: none; }
+.btn:active { transform: scale(0.96); }
+.btn-main { background: var(--gold); color: var(--on-gold); }
+.btn-main:active { background: var(--gold-dark); }
+.btn-wa { background: var(--wa); color: var(--on-wa); }
+.btn-soft { background: var(--card-2); color: var(--text); box-shadow: inset 0 0 0 1px var(--line); }
+.btn-wide { width: 100%; }
+
+/* Кнопка корзины внизу: появляется с первым товаром */
+.cartbar {
+  position: fixed; z-index: 40; left: 12px; right: 12px; bottom: calc(12px + var(--safe-b));
+  max-width: 560px; margin: 0 auto; min-height: 64px; padding: 8px 8px 8px 10px;
+  display: flex; align-items: center; gap: 10px;
+  background: var(--wine); color: var(--text); border: 1px solid var(--gold-dark); border-radius: 18px; text-decoration: none;
+  box-shadow: var(--shadow);
+  transform: translateY(calc(100% + 40px)); transition: transform 0.6s var(--spring);
+}
+.cartbar.show { transform: none; }
+.cartbar.bump { animation: bump 0.45s var(--spring); }
+body[data-view="order"] .cartbar { display: none; }
+body[data-view="order"].has-cart { padding-bottom: 0; }
+.cb-bag { position: relative; flex: none; width: 46px; height: 46px; border-radius: var(--r-btn); background: var(--card); color: var(--gold-light); display: grid; place-items: center; }
+.cb-bag svg { width: 24px; height: 24px; }
+.cb-bag i {
+  position: absolute; top: -6px; right: -6px; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px;
+  background: var(--gold); color: var(--on-gold); font: 700 12.5px/22px var(--body); font-style: normal; text-align: center;
+}
+.cb-text { display: grid; gap: 4px; margin-right: auto; font-size: 12.5px; line-height: 1; color: var(--gold-light); min-width: 0; }
+.cb-sum { font: 700 20px/1 var(--head); color: var(--text); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cb-go {
+  flex: none; display: inline-flex; align-items: center; gap: 2px; height: 48px; padding: 0 8px 0 16px; border-radius: var(--r-btn);
+  background: var(--gold); color: var(--on-gold); font-weight: 700; font-size: 15px;
+}
+.cb-go svg { width: 20px; height: 20px; stroke-width: 2.6; }
+@keyframes bump { 0% { transform: scale(1); } 35% { transform: scale(1.04); } 100% { transform: scale(1); } }
+
+@media (max-width: 374px) {
+  .appbar-in { padding: 0 12px; gap: 8px; }
+  .brand { gap: 8px; }
+  .brand-mark { width: 40px; height: 40px; }
+  .brand-text b { font-size: 17px; }
+  .brand-sub { font-size: 11.5px; }
+  .tools { gap: 6px; }
+  .cartbar { gap: 8px; }
+  .cb-go { padding: 0 4px 0 12px; font-size: 14px; }
+}
+
+/* Окно товара: снизу на телефоне, по центру на большом экране */
+.sheet { position: fixed; inset: 0; z-index: 50; visibility: hidden; transition: visibility 0s 0.45s; }
+.sheet.open { visibility: visible; transition: none; }
+.sheet-bg { position: absolute; inset: 0; background: var(--veil); opacity: 0; transition: opacity 0.35s; }
+.sheet.open .sheet-bg { opacity: 1; }
+.sheet-card {
+  position: absolute; left: 0; right: 0; bottom: 0; max-height: 92svh; overflow: auto; overscroll-behavior: contain;
+  background: var(--card); border-top: 1px solid var(--gold-dark); border-radius: 24px 24px 0 0; padding-bottom: var(--safe-b); outline: none;
+  transform: translateY(105%); transition: transform 0.5s var(--ease);
+}
+.sheet.open .sheet-card { transform: none; }
+.sheet-x {
+  position: absolute; z-index: 2; top: 12px; right: 12px; width: var(--tap); height: var(--tap); border: 1px solid var(--line); border-radius: var(--r-btn);
+  background: var(--bar); color: var(--gold-light); display: grid; place-items: center;
+}
+.sheet-x svg { width: 22px; height: 22px; }
+@media (min-width: 768px) {
+  .sheet-card { left: 50%; right: auto; bottom: auto; top: 50%; width: 520px; max-height: 88vh; border: 1px solid var(--gold-dark); border-radius: 24px; transform: translate(-50%, -46%) scale(0.96); opacity: 0; transition: transform 0.45s var(--ease), opacity 0.25s; }
+  .sheet.open .sheet-card { transform: translate(-50%, -50%); opacity: 1; }
+}
+
+/* Подсказка и летящий товар */
+.toast {
+  position: fixed; z-index: 60; left: 50%; bottom: calc(92px + var(--safe-b)); max-width: calc(100% - 32px);
+  padding: 12px 16px; border-radius: var(--r-btn); background: var(--gold-light); color: var(--on-gold); font-weight: 600; font-size: 14.5px;
+  transform: translate(-50%, 20px); opacity: 0; pointer-events: none; transition: transform 0.4s var(--spring), opacity 0.25s;
+}
+.toast.show { transform: translate(-50%, 0); opacity: 1; }
+.flyer {
+  position: fixed; z-index: 70; top: 0; left: 0; width: 44px; height: 44px; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: var(--wine) center / cover no-repeat; box-shadow: 0 0 0 1px var(--gold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

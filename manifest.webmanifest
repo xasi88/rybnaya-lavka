@@ -1,0 +1,15 @@
+{
+  "id": "/rybnaya-lavka/",
+  "name": "Рыбная лавка · Каталог и заказ",
+  "short_name": "Рыбная лавка",
+  "description": "Каталог «Рыбная лавка». Соберите заказ и отправьте его в WhatsApp лавки",
+  "lang": "ru",
+  "start_url": "./#menu",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#0f0f0f",
+  "icons": [
+    { "src": "img/logo-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
